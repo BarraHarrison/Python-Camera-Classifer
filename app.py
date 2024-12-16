@@ -18,7 +18,7 @@ class App:
         self.camera = camera.Camera()
         self.init_gui()
         self.delay = 15
-        # self.update()
+        self.update()
         self.window.attributes('-topmost', True)
         self.window.mainloop()
 
@@ -69,4 +69,26 @@ class App:
         self.counters[class_num - 1] += 1
 
     def reset(self):
-        pass
+        for directory in ['1', '2']:
+            for file in os.listdir(directory):
+                file_path = os.path.join(directory, file)
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+
+        self.counters = [1, 1]
+        # self.model = model.Model()
+        self.class_label.config(text='CLASS')
+
+    def update(self):
+        if self.auto_predict:
+            # self.predict()
+            pass
+
+        ret, frame = self.camera.get_frame()
+        if ret:
+            self.photo = PIL.ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
+            self.canvas.create_image(0,0, image=self.photo, anchor=tk.NW)
+        
+        self.window.after(self.delay, self.update)
+
+    
