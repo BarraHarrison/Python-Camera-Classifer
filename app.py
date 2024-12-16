@@ -16,7 +16,7 @@ class App:
 
         self.auto_predict = False
         self.camera = camera.Camera()
-        # self.init_gui()
+        self.init_gui()
         self.delay = 15
         # self.update()
         self.window.attributes('-topmost', True)
@@ -53,3 +53,20 @@ class App:
 
     def auto_predict_toggle(self):
         self.auto_predict = not self.auto_predict
+
+    def save_for_class(self, class_num):
+        ret, frame = self.camera.get_frame()
+        if not os.path.exists('1'):
+            os.mkdir('1')
+        if not os.path.exists('2'):
+            os.mkdir('2')
+
+        cv.imwrite(f'{class_num}/frame{self.counters[class_num - 1]}.jpg', cv.cvtColor(frame, cv.COLOR_RGB2GRAY))
+        img = PIL.Image.open(f'{class_num}/frame{self.counters[class_num - 1]}.jpg')
+        img.thumbnail((150, 150), PIL.Image.ANTIALIAS)
+        img.save(f'{class_num}/frame{self.counters[class_num - 1]}.jpg')
+
+        self.counters[class_num - 1] += 1
+
+    def reset(self):
+        pass
