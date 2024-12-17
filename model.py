@@ -30,7 +30,7 @@ class Model:
 
     def predict(self, frame):
         frame = frame[1]
-        cv.imwrite('frame.jpg', cv.cvtColor(cv.COLOR_RGB2GRAY))
+        cv.imwrite('frame.jpg', cv.cvtColor(frame, cv.COLOR_RGB2GRAY))
         img = PIL.Image.open('frame.jpg')
         img.thumbnail((150, 150), PIL.Image.ANTIALIAS)
         img.save(f'frame.jpg')
