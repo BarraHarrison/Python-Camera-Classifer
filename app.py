@@ -4,6 +4,7 @@ import cv2 as cv
 import os
 import PIL.Image, PIL.ImageTk
 import camera
+import model
 
 class App:
 
@@ -12,7 +13,7 @@ class App:
         self.window_title = window_title
         self.counters = [1, 1]
 
-        # self.model = ...
+        self.model = model.Model()
 
         self.auto_predict = False
         self.camera = camera.Camera()
@@ -76,13 +77,13 @@ class App:
                     os.unlink(file_path)
 
         self.counters = [1, 1]
-        # self.model = model.Model()
+        self.model = model.Model()
         self.class_label.config(text='CLASS')
 
     def update(self):
         if self.auto_predict:
-            # self.predict()
-            pass
+            self.predict()
+            
 
         ret, frame = self.camera.get_frame()
         if ret:
@@ -90,5 +91,16 @@ class App:
             self.canvas.create_image(0,0, image=self.photo, anchor=tk.NW)
         
         self.window.after(self.delay, self.update)
+
+    def predict(self):
+        frame = self.camera.get_frame()
+        prediction = self.model.predict(frame)
+
+        if prediction == 1:
+            self.class_label.config(text=self.classname_one)
+            return self.classname_one
+        if prediction == 2:
+            self.class_label.config(text=self.classname_two)
+            return self.classname_two
 
     

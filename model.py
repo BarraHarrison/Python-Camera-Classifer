@@ -34,3 +34,9 @@ class Model:
         img = PIL.Image.open('frame.jpg')
         img.thumbnail((150, 150), PIL.Image.ANTIALIAS)
         img.save(f'frame.jpg')
+
+        img = cv.imread('frame.jpg')[:,:,0]
+        img = img.reshape(16800)
+        prediction = self.model.predict([img])
+
+        return prediction[0]
